@@ -1,0 +1,80 @@
+/* Concept: one fixed WebGL stage. A portrait made of points dissolves into the cells of a branching neural network. Scroll flies the camera from neuron to neuron; each project is a larger, coloured neuron where the camera stops. Single committed dark look, cold accent, one colour per project. */
+:root {
+  --bg: #04060a;
+  --fg: #d3dbe5;
+  --dim: #66727f;
+  --accent: #8fb8d4;
+  --line: rgba(143, 184, 212, 0.22);
+  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+html { background: var(--bg); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--display);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+#scroller { height: 1240vh; }
+.mono { font-family: var(--mono); font-weight: 300; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; }
+.dim { color: var(--dim); }
+
+.hud { position: fixed; z-index: 3; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); display: flex; justify-content: space-between; gap: 16px; }
+.top { top: calc(env(safe-area-inset-top, 0px) + 18px); }
+.top span:first-child { color: var(--fg); }
+
+.hero { position: fixed; z-index: 3; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 9vh); pointer-events: none; transition: opacity 0.2s linear; }
+.hero h1 { margin: 0; font-weight: 300; font-size: clamp(2.8rem, 9vw, 7rem); letter-spacing: -0.035em; line-height: 0.95; text-shadow: 0 0 24px rgba(4, 6, 10, 0.9); text-wrap: balance; }
+.hero p { margin: 14px 0 0; color: var(--accent); }
+
+.hint { position: fixed; z-index: 3; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 22px); display: flex; align-items: center; gap: 12px; color: var(--dim); pointer-events: none; }
+.tick { display: block; width: 28px; height: 1px; background: var(--accent); transform-origin: left center; animation: tick 2.4s ease-in-out infinite; }
+@keyframes tick { 0%, 100% { transform: scaleX(0.25); opacity: 0.5; } 50% { transform: scaleX(1); opacity: 1; } }
+
+.rail { position: fixed; z-index: 3; right: max(12px, env(safe-area-inset-right, 0px)); top: 22%; height: 56%; width: 2px; background: var(--line); }
+.rail i { display: block; width: 100%; height: 100%; background: var(--accent); transform-origin: top; transform: scaleY(0); }
+
+#labels { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+.node { --c: var(--accent); position: absolute; left: 0; top: 0; opacity: 0; will-change: transform, opacity; width: max-content; max-width: min(420px, 82vw); text-align: center; color: var(--fg); text-decoration: none; pointer-events: none; display: block; text-shadow: 0 0 22px rgba(4, 6, 10, 0.95), 0 0 4px rgba(4, 6, 10, 0.9); }
+.node b { display: block; font-weight: 500; font-size: clamp(2rem, 5vw, 3.6rem); letter-spacing: -0.03em; line-height: 1; text-wrap: balance; transition: color 0.2s; }
+.node span { display: block; margin-top: 12px; color: var(--c); font-size: 0.76rem; line-height: 1.6; }
+.node .go { display: inline-block; margin-top: 18px; padding-bottom: 4px; color: var(--fg); border-bottom: 1px solid var(--c); transition: color 0.2s; }
+.node:hover b, .node:focus-visible b, .node:hover .go, .node:focus-visible .go { color: var(--c); }
+.node:focus-visible { outline: 1px solid var(--c); outline-offset: 12px; }
+
+.end { position: fixed; z-index: 3; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 26px); transform: translateX(-50%); width: max-content; max-width: calc(100% - 48px); text-align: center; color: var(--dim); opacity: 0; transition: opacity 0.4s linear; pointer-events: none; }
+.fail { position: fixed; inset: 0; z-index: 4; display: none; align-items: center; justify-content: center; text-align: center; padding: 24px; color: var(--dim); }
+
+.portal { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0; background: radial-gradient(ellipse 36% 44% at 50% 50%, rgba(214, 232, 245, 0.9) 0%, rgba(143, 184, 212, 0.4) 34%, rgba(143, 184, 212, 0) 72%); mix-blend-mode: screen; will-change: opacity, transform; }
+
+/* Final page: scrolls up over the end of the tunnel. Edit the text, links and tags here. */
+#final { position: relative; z-index: 4; background: linear-gradient(to bottom, rgba(4, 6, 10, 0) 0, var(--bg) 70vh); padding-top: 70vh; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 40px); }
+.fin { max-width: 1040px; margin: 0 auto; display: grid; gap: clamp(56px, 10vh, 104px); }
+.fin .kicker { color: var(--accent); margin: 0 0 18px; }
+.fin h2 { margin: 0; font-weight: 300; font-size: clamp(3.2rem, 11vw, 8rem); letter-spacing: -0.04em; line-height: 0.92; text-wrap: balance; }
+.fin .lead { max-width: 46ch; margin: 28px 0 0; font-size: clamp(1.05rem, 2vw, 1.3rem); line-height: 1.55; }
+.links { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.links a { display: grid; grid-template-columns: 8rem minmax(0, 1fr) auto; align-items: baseline; gap: 16px; padding: 24px 0; border-bottom: 1px solid var(--line); color: var(--fg); text-decoration: none; transition: color 0.2s, padding-left 0.2s; }
+.links a:hover, .links a:focus-visible { color: var(--accent); padding-left: 12px; }
+.links .lab { color: var(--dim); }
+.links .val { font-size: clamp(1.15rem, 2.8vw, 1.8rem); letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.links .arr { color: var(--accent); }
+.more { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 36px 40px; }
+.more section { min-width: 0; }
+.more h3 { margin: 0 0 14px; color: var(--dim); font-weight: 300; }
+.more p, .more li { margin: 0; line-height: 1.6; }
+.more ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tags span { border: 1px solid var(--line); padding: 6px 12px; color: var(--fg); }
+.foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--dim); padding-top: 24px; border-top: 1px solid var(--line); }
+@media (max-width: 560px) {
+  .links a { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; }
+  .links .lab { grid-column: 1 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) { .tick { animation: none; } }
