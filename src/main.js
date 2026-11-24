@@ -30,10 +30,11 @@ import pts from './portrait-points.json';
 
   /* ---------- the neural network: dendrites, axons, somas ---------- */
   var projects = [
-    { name: 'Radar Tech', desc: 'Plataforma de eventos tech en España', url: '#', hex: '#4dd9c7', rgb: [0.30, 0.85, 0.78] },
-    { name: 'Bot de esquí', desc: 'Avisos para esquiadores en Sierra Nevada', url: '#', hex: '#66a6ff', rgb: [0.40, 0.65, 1.0] },
-    { name: 'TFG', desc: 'Trabajo de fin de grado sobre influencers', url: '#', hex: '#b394ff', rgb: [0.70, 0.58, 1.0] },
-    { name: 'Atlas Horizon Group', desc: 'Proyecto de Business Intelligence', url: '#', hex: '#ffb861', rgb: [1.0, 0.72, 0.38] }
+    /* demo: el proyecto funcionando · code: repositorio en GitHub. Si un enlace está vacío, no se muestra. */
+    { name: 'Radar Tech', desc: 'Plataforma de eventos tech en España', demo: '', code: '', hex: '#4dd9c7', rgb: [0.30, 0.85, 0.78] },
+    { name: 'Bot de esquí', desc: 'Avisos para esquiadores en Sierra Nevada', demo: '', code: '', hex: '#66a6ff', rgb: [0.40, 0.65, 1.0] },
+    { name: 'TFG', desc: 'Trabajo de fin de grado sobre influencers', demo: '', code: '', hex: '#b394ff', rgb: [0.70, 0.58, 1.0] },
+    { name: 'Atlas Horizon Group', desc: 'Proyecto de Business Intelligence', demo: 'https://brahimnr2003-beep.github.io/atlas-horizon-bi/', code: 'https://github.com/brahimnr2003-beep/atlas-horizon-bi', hex: '#ffb861', rgb: [1.0, 0.72, 0.38] }
   ];
   var LPOS = [], LD = [], LPH = [], LC = [], SEG = [];
   var NPOS = [], NS = [], ND = [], NPH = [], NC = [], SOMAS = [];
@@ -373,17 +374,28 @@ import pts from './portrait-points.json';
   /* ---------- labels ---------- */
   var labelsEl = document.getElementById('labels');
   var labelEls = projects.map(function (p) {
-    var d = document.createElement('a');
+    var d = document.createElement('div');
     d.className = 'node';
     d.style.setProperty('--c', p.hex);
-    d.href = p.url; d.target = '_blank'; d.rel = 'noopener'; d.tabIndex = -1;
     var nb = document.createElement('b'); nb.textContent = p.name;
     var ns = document.createElement('span'); ns.className = 'mono'; ns.textContent = p.desc;
-    var ng = document.createElement('span'); ng.className = 'mono go'; ng.textContent = 'Ver proyecto →';
-    d.appendChild(nb); d.appendChild(ns); d.appendChild(ng);
+    d.appendChild(nb); d.appendChild(ns);
+    var row = document.createElement('div'); row.className = 'go-row';
+    [['Ver proyecto', p.demo], ['Código', p.code]].forEach(function (l) {
+      if (!l[1]) return;
+      var a = document.createElement('a');
+      a.className = 'mono go'; a.href = l[1]; a.target = '_blank'; a.rel = 'noopener'; a.tabIndex = -1;
+      a.textContent = l[0] + ' →';
+      row.appendChild(a);
+    });
+    if (row.children.length) d.appendChild(row);
     labelsEl.appendChild(d);
     return d;
   });
+  function setTab(el, on) {
+    var as = el.getElementsByTagName('a');
+    for (var i = 0; i < as.length; i++) as[i].tabIndex = on ? 0 : -1;
+  }
 
   /* ---------- sizing ---------- */
   var Z0 = 4.2, W = 1, Hh = 1;
@@ -495,13 +507,13 @@ import pts from './portrait-points.json';
       var el = labelEls[k];
       var dz = z - projWorld[k].z;
       var vis = sstep(10.5, 7.0, dz) * sstep(0.8, 3.0, dz) * U.uReveal.value;
-      if (vis < 0.01) { el.style.opacity = 0; el.style.pointerEvents = 'none'; el.tabIndex = -1; continue; }
+      if (vis < 0.01) { el.style.opacity = 0; el.style.pointerEvents = 'none'; setTab(el, false); continue; }
       v3.copy(projWorld[k]).project(camera);
       var px = (v3.x * 0.5 + 0.5) * W, py = (-v3.y * 0.5 + 0.5) * Hh;
       var sizePx = Math.min(150, 0.4 * U.uScale.value / Math.max(dz, 0.5) / U.uPR.value);
       el.style.opacity = vis.toFixed(3);
       el.style.pointerEvents = vis > 0.6 ? 'auto' : 'none';
-      el.tabIndex = vis > 0.6 ? 0 : -1;
+      setTab(el, vis > 0.6);
       el.style.transform = 'translate(' + px.toFixed(1) + 'px,' + (py + sizePx * 0.5 + 16).toFixed(1) + 'px) translateX(-50%)';
     }
 

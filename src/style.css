@@ -43,9 +43,11 @@ body {
 .node { --c: var(--accent); position: absolute; left: 0; top: 0; opacity: 0; will-change: transform, opacity; width: max-content; max-width: min(420px, 82vw); text-align: center; color: var(--fg); text-decoration: none; pointer-events: none; display: block; text-shadow: 0 0 22px rgba(4, 6, 10, 0.95), 0 0 4px rgba(4, 6, 10, 0.9); }
 .node b { display: block; font-weight: 500; font-size: clamp(2rem, 5vw, 3.6rem); letter-spacing: -0.03em; line-height: 1; text-wrap: balance; transition: color 0.2s; }
 .node span { display: block; margin-top: 12px; color: var(--c); font-size: 0.76rem; line-height: 1.6; }
-.node .go { display: inline-block; margin-top: 18px; padding-bottom: 4px; color: var(--fg); border-bottom: 1px solid var(--c); transition: color 0.2s; }
-.node:hover b, .node:focus-visible b, .node:hover .go, .node:focus-visible .go { color: var(--c); }
-.node:focus-visible { outline: 1px solid var(--c); outline-offset: 12px; }
+.node .go-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px 28px; margin-top: 18px; }
+.node .go { display: inline-block; padding-bottom: 4px; color: var(--fg); font-size: 0.76rem; text-decoration: none; border-bottom: 1px solid var(--c); transition: color 0.2s; }
+.node .go:hover, .node .go:focus-visible { color: var(--c); }
+.node:hover b, .node:focus-within b { color: var(--c); }
+.node .go:focus-visible { outline: 1px solid var(--c); outline-offset: 6px; }
 
 .end { position: fixed; z-index: 3; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 26px); transform: translateX(-50%); width: max-content; max-width: calc(100% - 48px); text-align: center; color: var(--dim); opacity: 0; transition: opacity 0.4s linear; pointer-events: none; }
 .fail { position: fixed; inset: 0; z-index: 4; display: none; align-items: center; justify-content: center; text-align: center; padding: 24px; color: var(--dim); }
