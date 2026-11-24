@@ -381,11 +381,11 @@ import pts from './portrait-points.json';
     var ns = document.createElement('span'); ns.className = 'mono'; ns.textContent = p.desc;
     d.appendChild(nb); d.appendChild(ns);
     var row = document.createElement('div'); row.className = 'go-row';
-    [['Ver proyecto', p.demo], ['Código', p.code]].forEach(function (l) {
+    [['Ver proyecto', p.demo], ['Ver código', p.code]].forEach(function (l) {
       if (!l[1]) return;
       var a = document.createElement('a');
       a.className = 'mono go'; a.href = l[1]; a.target = '_blank'; a.rel = 'noopener'; a.tabIndex = -1;
-      a.textContent = l[0] + ' →';
+      a.textContent = l[0] + ' ↗';
       row.appendChild(a);
     });
     if (row.children.length) d.appendChild(row);
