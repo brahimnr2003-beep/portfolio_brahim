@@ -32,10 +32,10 @@ import pts from './portrait-points.json';
   var projects = [
     /* demo: el proyecto funcionando · code: repositorio en GitHub. Si un enlace está vacío, no se muestra.
        award (opcional): se muestra con una medalla encima del nombre. El orden de la lista es el orden del recorrido. */
-    { name: 'Radar Tech', desc: 'Web para descubrir los eventos tecnológicos de España', demo: 'https://www.radartech.es/', code: 'https://github.com/brahimnr2003-beep/radartech', hex: '#4dd9c7', rgb: [0.30, 0.85, 0.78] },
-    { name: 'Neoda', desc: 'Tendencias del agua en las 52 provincias de España con 45 años de datos de la NASA', award: '3.er puesto · NASA Space Apps Granada 2026', demo: 'https://fpanero.github.io/Neoda_Heeramienta_Medicion/', code: 'https://github.com/brahimnr2003-beep/Neoda_Herramienta_', hex: '#ff7a85', rgb: [1.0, 0.48, 0.52] },
-    { name: 'NevadaRadar', desc: 'Bot de Telegram que te dice qué días merece la pena esquiar en Sierra Nevada', demo: 'https://t.me/NevadaRadar_Bot', code: 'https://github.com/brahimnr2003-beep/NevadaRadar', hex: '#66a6ff', rgb: [0.40, 0.65, 1.0] },
-    { name: 'TFG', desc: 'Influencers IA frente a humanos: engagement y transparencia en Instagram', demo: 'https://brahimnr2003-beep.github.io/Tfg_influencers/', code: 'https://github.com/brahimnr2003-beep/Tfg_influencers', hex: '#b394ff', rgb: [0.70, 0.58, 1.0] },
+    { name: 'Radar Tech', desc: 'Plataforma para descubrir los eventos tecnológicos de España', demo: 'https://www.radartech.es/', code: 'https://github.com/brahimnr2003-beep/radartech', hex: '#4dd9c7', rgb: [0.30, 0.85, 0.78] },
+    { name: 'Neoda', desc: 'Herramienta web para detectar tendencias hídricas en España con datos de la NASA', award: '3.er puesto · NASA Space Apps Granada 2026', demo: 'https://fpanero.github.io/Neoda_Heeramienta_Medicion/', code: 'https://github.com/brahimnr2003-beep/Neoda_Herramienta_', hex: '#ff7a85', rgb: [1.0, 0.48, 0.52] },
+    { name: 'NevadaRadar', desc: 'Bot de Telegram con avisos para esquiadores de Sierra Nevada', demo: 'https://t.me/NevadaRadar_Bot', code: 'https://github.com/brahimnr2003-beep/NevadaRadar', hex: '#66a6ff', rgb: [0.40, 0.65, 1.0] },
+    { name: 'TFG', desc: 'Influencers IA frente a humanos: estudio descriptivo-comparativo mediante análisis de contenido cuantitativo', demo: 'https://brahimnr2003-beep.github.io/Tfg_influencers/', code: 'https://github.com/brahimnr2003-beep/Tfg_influencers', hex: '#b394ff', rgb: [0.70, 0.58, 1.0] },
     { name: 'Atlas Horizon Group', desc: 'Business Intelligence de principio a fin: KPIs, data warehouse y cuadros de mando', demo: 'https://brahimnr2003-beep.github.io/atlas-horizon-bi/', code: 'https://github.com/brahimnr2003-beep/atlas-horizon-bi', hex: '#ffb861', rgb: [1.0, 0.72, 0.38] }
   ];
   /* bronze medal for awards: ribbon + disc with the place number */
