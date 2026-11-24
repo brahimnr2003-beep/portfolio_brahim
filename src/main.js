@@ -32,7 +32,7 @@ import pts from './portrait-points.json';
   var projects = [
     /* demo: el proyecto funcionando · code: repositorio en GitHub. Si un enlace está vacío, no se muestra. */
     { name: 'Radar Tech', desc: 'Plataforma de eventos tech en España', demo: '', code: '', hex: '#4dd9c7', rgb: [0.30, 0.85, 0.78] },
-    { name: 'Bot de esquí', desc: 'Avisos para esquiadores en Sierra Nevada', demo: '', code: '', hex: '#66a6ff', rgb: [0.40, 0.65, 1.0] },
+    { name: 'NevadaRadar', desc: 'Avisos para esquiadores en Sierra Nevada', demo: '', code: '', hex: '#66a6ff', rgb: [0.40, 0.65, 1.0] },
     { name: 'TFG', desc: 'Trabajo de fin de grado sobre influencers', demo: '', code: '', hex: '#b394ff', rgb: [0.70, 0.58, 1.0] },
     { name: 'Atlas Horizon Group', desc: 'Proyecto de Business Intelligence', demo: 'https://brahimnr2003-beep.github.io/atlas-horizon-bi/', code: 'https://github.com/brahimnr2003-beep/atlas-horizon-bi', hex: '#ffb861', rgb: [1.0, 0.72, 0.38] }
   ];
