@@ -30,13 +30,20 @@ import pts from './portrait-points.json';
 
   /* ---------- the neural network: dendrites, axons, somas ---------- */
   var projects = [
-    /* demo: el proyecto funcionando · code: repositorio en GitHub. Si un enlace está vacío, no se muestra. */
-    { name: 'Radar Tech', desc: 'Plataforma de eventos tech en España', demo: 'https://www.radartech.es/', code: 'https://github.com/brahimnr2003-beep/radartech', hex: '#4dd9c7', rgb: [0.30, 0.85, 0.78] },
-    { name: 'NevadaRadar', desc: 'Avisos para esquiadores en Sierra Nevada', demo: 'https://t.me/NevadaRadar_Bot', code: 'https://github.com/brahimnr2003-beep/NevadaRadar', hex: '#66a6ff', rgb: [0.40, 0.65, 1.0] },
-    { name: 'TFG', desc: 'Trabajo de fin de grado sobre influencers', demo: 'https://brahimnr2003-beep.github.io/Tfg_influencers/', code: 'https://github.com/brahimnr2003-beep/Tfg_influencers', hex: '#b394ff', rgb: [0.70, 0.58, 1.0] },
-    { name: 'Atlas Horizon Group', desc: 'Proyecto de Business Intelligence', demo: 'https://brahimnr2003-beep.github.io/atlas-horizon-bi/', code: 'https://github.com/brahimnr2003-beep/atlas-horizon-bi', hex: '#ffb861', rgb: [1.0, 0.72, 0.38] },
-    { name: 'Neoda', desc: 'Tendencias del agua en España con datos de la NASA · 3.er puesto en NASA Space Apps Granada 2026', demo: 'https://fpanero.github.io/Neoda_Heeramienta_Medicion/', code: 'https://github.com/brahimnr2003-beep/Neoda_Herramienta_', hex: '#ff7a85', rgb: [1.0, 0.48, 0.52] }
+    /* demo: el proyecto funcionando · code: repositorio en GitHub. Si un enlace está vacío, no se muestra.
+       award (opcional): se muestra con una medalla encima del nombre. El orden de la lista es el orden del recorrido. */
+    { name: 'Radar Tech', desc: 'Web para descubrir los eventos tecnológicos de España', demo: 'https://www.radartech.es/', code: 'https://github.com/brahimnr2003-beep/radartech', hex: '#4dd9c7', rgb: [0.30, 0.85, 0.78] },
+    { name: 'Neoda', desc: 'Tendencias del agua en las 52 provincias de España con 45 años de datos de la NASA', award: '3.er puesto · NASA Space Apps Granada 2026', demo: 'https://fpanero.github.io/Neoda_Heeramienta_Medicion/', code: 'https://github.com/brahimnr2003-beep/Neoda_Herramienta_', hex: '#ff7a85', rgb: [1.0, 0.48, 0.52] },
+    { name: 'NevadaRadar', desc: 'Bot de Telegram que te dice qué días merece la pena esquiar en Sierra Nevada', demo: 'https://t.me/NevadaRadar_Bot', code: 'https://github.com/brahimnr2003-beep/NevadaRadar', hex: '#66a6ff', rgb: [0.40, 0.65, 1.0] },
+    { name: 'TFG', desc: 'Influencers IA frente a humanos: engagement y transparencia en Instagram', demo: 'https://brahimnr2003-beep.github.io/Tfg_influencers/', code: 'https://github.com/brahimnr2003-beep/Tfg_influencers', hex: '#b394ff', rgb: [0.70, 0.58, 1.0] },
+    { name: 'Atlas Horizon Group', desc: 'Business Intelligence de principio a fin: KPIs, data warehouse y cuadros de mando', demo: 'https://brahimnr2003-beep.github.io/atlas-horizon-bi/', code: 'https://github.com/brahimnr2003-beep/atlas-horizon-bi', hex: '#ffb861', rgb: [1.0, 0.72, 0.38] }
   ];
+  /* bronze medal for awards: ribbon + disc with the place number */
+  var MEDAL = '<svg class="medal" viewBox="0 0 24 32" aria-hidden="true">' +
+    '<path d="M5 0h5l3.5 11h-5z" fill="#2f5fb3"/><path d="M19 0h-5l-3.5 11h5z" fill="#c8453b"/>' +
+    '<circle cx="12" cy="21" r="9" fill="#b8733a" stroke="#f0bd85" stroke-width="1.2"/>' +
+    '<circle cx="12" cy="21" r="6.3" fill="none" stroke="#e8a868" stroke-width=".8" opacity=".8"/>' +
+    '<text x="12" y="24.6" text-anchor="middle" font-size="9.5" font-weight="700" font-family="Arial, sans-serif" fill="#fff3e4">3</text></svg>';
   var LPOS = [], LD = [], LPH = [], LC = [], SEG = [];
   var NPOS = [], NS = [], ND = [], NPH = [], NC = [], SOMAS = [];
   function norm(v) { var l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; }
@@ -381,6 +388,12 @@ import pts from './portrait-points.json';
     var d = document.createElement('div');
     d.className = 'node';
     d.style.setProperty('--c', p.hex);
+    if (p.award) {
+      var aw = document.createElement('div'); aw.className = 'award mono';
+      aw.innerHTML = MEDAL;
+      aw.appendChild(document.createTextNode(p.award));
+      d.appendChild(aw);
+    }
     var nb = document.createElement('b'); nb.textContent = p.name;
     var ns = document.createElement('span'); ns.className = 'mono'; ns.textContent = p.desc;
     d.appendChild(nb); d.appendChild(ns);

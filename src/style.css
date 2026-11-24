@@ -43,6 +43,8 @@ body {
 .node { --c: var(--accent); position: absolute; left: 0; top: 0; opacity: 0; will-change: transform, opacity; width: max-content; max-width: min(420px, 82vw); text-align: center; color: var(--fg); text-decoration: none; pointer-events: none; display: block; text-shadow: 0 0 22px rgba(4, 6, 10, 0.95), 0 0 4px rgba(4, 6, 10, 0.9); }
 .node b { display: block; font-weight: 500; font-size: clamp(2rem, 5vw, 3.6rem); letter-spacing: -0.03em; line-height: 1; text-wrap: balance; transition: color 0.2s; }
 .node span { display: block; margin-top: 12px; color: var(--c); font-size: 0.76rem; line-height: 1.6; }
+.node .award { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 14px; padding: 5px 16px 5px 9px; border: 1px solid rgba(240, 189, 133, 0.45); border-radius: 999px; color: #f0bd85; font-size: 0.72rem; white-space: nowrap; background: rgba(184, 115, 58, 0.12); }
+.node .award .medal { width: 24px; height: 32px; flex: none; filter: drop-shadow(0 0 6px rgba(240, 189, 133, 0.35)); }
 .node .go-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px 28px; margin-top: 18px; }
 .node .go { display: inline-block; padding-bottom: 4px; color: var(--fg); font-size: 0.76rem; text-decoration: none; border-bottom: 1px solid var(--c); transition: color 0.2s; }
 .node .go:hover, .node .go:focus-visible { color: var(--c); }
@@ -80,3 +82,5 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) { .tick { animation: none; } }
+
+@media (max-width: 480px) { .node .award { white-space: normal; text-align: left; } }
