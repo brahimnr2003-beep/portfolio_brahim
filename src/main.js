@@ -31,10 +31,11 @@ import pts from './portrait-points.json';
   /* ---------- the neural network: dendrites, axons, somas ---------- */
   var projects = [
     /* demo: el proyecto funcionando · code: repositorio en GitHub. Si un enlace está vacío, no se muestra. */
-    { name: 'Radar Tech', desc: 'Plataforma de eventos tech en España', demo: '', code: '', hex: '#4dd9c7', rgb: [0.30, 0.85, 0.78] },
-    { name: 'NevadaRadar', desc: 'Avisos para esquiadores en Sierra Nevada', demo: '', code: '', hex: '#66a6ff', rgb: [0.40, 0.65, 1.0] },
-    { name: 'TFG', desc: 'Trabajo de fin de grado sobre influencers', demo: '', code: '', hex: '#b394ff', rgb: [0.70, 0.58, 1.0] },
-    { name: 'Atlas Horizon Group', desc: 'Proyecto de Business Intelligence', demo: 'https://brahimnr2003-beep.github.io/atlas-horizon-bi/', code: 'https://github.com/brahimnr2003-beep/atlas-horizon-bi', hex: '#ffb861', rgb: [1.0, 0.72, 0.38] }
+    { name: 'Radar Tech', desc: 'Plataforma de eventos tech en España', demo: 'https://www.radartech.es/', code: 'https://github.com/brahimnr2003-beep/radartech', hex: '#4dd9c7', rgb: [0.30, 0.85, 0.78] },
+    { name: 'NevadaRadar', desc: 'Avisos para esquiadores en Sierra Nevada', demo: 'https://t.me/NevadaRadar_Bot', code: 'https://github.com/brahimnr2003-beep/NevadaRadar', hex: '#66a6ff', rgb: [0.40, 0.65, 1.0] },
+    { name: 'TFG', desc: 'Trabajo de fin de grado sobre influencers', demo: 'https://brahimnr2003-beep.github.io/Tfg_influencers/', code: 'https://github.com/brahimnr2003-beep/Tfg_influencers', hex: '#b394ff', rgb: [0.70, 0.58, 1.0] },
+    { name: 'Atlas Horizon Group', desc: 'Proyecto de Business Intelligence', demo: 'https://brahimnr2003-beep.github.io/atlas-horizon-bi/', code: 'https://github.com/brahimnr2003-beep/atlas-horizon-bi', hex: '#ffb861', rgb: [1.0, 0.72, 0.38] },
+    { name: 'Neoda', desc: 'Tendencias del agua en España con datos de la NASA · 3.er puesto en NASA Space Apps Granada 2026', demo: 'https://fpanero.github.io/Neoda_Heeramienta_Medicion/', code: 'https://github.com/brahimnr2003-beep/Neoda_Herramienta_', hex: '#ff7a85', rgb: [1.0, 0.48, 0.52] }
   ];
   var LPOS = [], LD = [], LPH = [], LC = [], SEG = [];
   var NPOS = [], NS = [], ND = [], NPH = [], NC = [], SOMAS = [];
@@ -96,8 +97,10 @@ import pts from './portrait-points.json';
     grow(prev, norm(rvec()), 0.5 * scale, 1, dist, ph, col);
   }
 
-  var LAYERS = 10, PER = 5, LZ0 = -2.5, LDZ = 4.2;
-  var PROJ_LAYER = { 3: 0, 5: 1, 7: 2, 9: 3 };
+  /* one project every two layers starting at layer 3, plus one closing layer: 4 projects → 10 layers */
+  var LAYERS = 2 * projects.length + 2, PER = 5, LZ0 = -2.5, LDZ = 4.2;
+  var PROJ_LAYER = {};
+  projects.forEach(function (_, k) { PROJ_LAYER[3 + 2 * k] = k; });
   var layers = [], projWorld = [];
   for (var l = 0; l < LAYERS; l++) {
     var zl = LZ0 - l * LDZ, row = [];
@@ -320,7 +323,8 @@ import pts from './portrait-points.json';
   scene.add(nodes);
 
   /* ---------- exit tunnel: rings of light that lead out of the network ---------- */
-  var XN = 9000, X_START = -44, X_END = -90;
+  var LAST_LAYER_Z = LZ0 - (LAYERS - 1) * LDZ;
+  var XN = 9000, X_START = LAST_LAYER_Z - 3.7, X_END = X_START - 46;
   var xpos = new Float32Array(XN * 3), xr = new Float32Array(XN * 3), xb = new Float32Array(XN), xs = new Float32Array(XN);
   for (var xi = 0; xi < XN; xi++) {
     var xz, xrad, xring = rnd() < 0.55;
@@ -435,9 +439,17 @@ import pts from './portrait-points.json';
   });
 
   /* ---------- scroll journey: fly to a project, hold, fly to the next ---------- */
+  /* timings in viewport heights (vh): portrait until 2.72, arrive at the first project at 4.16,
+     then 0.56 per move/hold, and a final 0.48 hold on the last project */
   var STOPZ = projWorld.map(function (v) { return v.z + 4.6; });
-  var BP = [0.34, 0.52, 0.59, 0.66, 0.73, 0.80, 0.87, 0.94, 1.0];
-  var BZ = [1.0, STOPZ[0], STOPZ[0], STOPZ[1], STOPZ[1], STOPZ[2], STOPZ[2], STOPZ[3], STOPZ[3]];
+  var BP_VH = [2.72, 4.16], BZ = [1.0, STOPZ[0]];
+  for (var bk = 1; bk < STOPZ.length; bk++) {
+    BP_VH.push(BP_VH[BP_VH.length - 1] + 0.56); BZ.push(STOPZ[bk - 1]);
+    BP_VH.push(BP_VH[BP_VH.length - 1] + 0.56); BZ.push(STOPZ[bk]);
+  }
+  BP_VH.push(BP_VH[BP_VH.length - 1] + 0.48); BZ.push(STOPZ[STOPZ.length - 1]);
+  var A_VH = BP_VH[BP_VH.length - 1];
+  var BP = BP_VH.map(function (v) { return v / A_VH; });
   function journeyZ(p) {
     for (var s = 0; s < BP.length - 1; s++) {
       if (p <= BP[s + 1]) {
@@ -455,8 +467,9 @@ import pts from './portrait-points.json';
     return rise * fall;
   }
 
-  /* scroll is split in three: A = portrait + projects (800vh), B = exit tunnel (340vh), O = final page scrolling in */
-  var A_VH = 8.0, B_VH = 3.4, Z_END = -86;
+  /* scroll is split in three: A = portrait + projects (A_VH), B = exit tunnel (340vh), O = final page scrolling in */
+  var B_VH = 3.4, Z_END = X_START - 42;
+  document.getElementById('scroller').style.height = ((A_VH + B_VH + 1) * 100).toFixed(0) + 'vh';
   var tS = 0, curS = 0;
   function readScroll() {
     var se = document.scrollingElement || document.documentElement;
@@ -479,15 +492,16 @@ import pts from './portrait-points.json';
     var sm = reduce ? 1 : 1 - Math.pow(0.001, dt);
     curS += (tS - curS) * sm;
     var p = clamp01(curS / A_VH), pB = clamp01((curS - A_VH) / B_VH), curO = clamp01((curS - A_VH - B_VH) / 0.5);
-    U.uTun.value = sstep(0.9, 1.0, p);
+    var sA = p * A_VH; /* progress through part A, in vh */
+    U.uTun.value = sstep(A_VH - 0.8, A_VH, sA);
 
     U.uTime.value = tt;
     if (!reduce) U.uIntro.value = Math.min(1, 0.6 + tt / 2.6 * 0.4);
-    U.uMorph.value = sstep(0.27, 0.52, p);
-    U.uReveal.value = sstep(0.3, 0.46, p);
+    U.uMorph.value = sstep(2.16, 4.16, sA);
+    U.uReveal.value = sstep(2.4, 3.68, sA);
 
-    var a = sstep(0.0, 0.3, p);
-    var z = p < 0.34 ? lerp(Z0, 1.0, a) : journeyZ(p);
+    var a = sstep(0.0, 2.4, sA);
+    var z = sA < 2.72 ? lerp(Z0, 1.0, a) : journeyZ(p);
     if (pB > 0) { var eb = clamp01(pB / 0.88); eb = 0.5 * (eb + eb * eb * (3 - 2 * eb)); z = lerp(BZ[BZ.length - 1], Z_END, eb); }
     var bf = sstep(0.0, 1.0, (1.0 - z) / 6.0);
     var cxp = cx(z) * bf + Math.sin(tt * 0.5) * 0.035 * bf;
@@ -517,11 +531,11 @@ import pts from './portrait-points.json';
       el.style.transform = 'translate(' + px.toFixed(1) + 'px,' + (py + sizePx * 0.5 + 16).toFixed(1) + 'px) translateX(-50%)';
     }
 
-    var fade = 1 - sstep(0.0, 0.1, p);
+    var fade = 1 - sstep(0.0, 0.8, sA);
     hero.style.opacity = fade; hint.style.opacity = fade;
     bar.style.transform = 'scaleY(' + ((p * A_VH + pB * B_VH) / (A_VH + B_VH)).toFixed(4) + ')';
-    endEl.style.opacity = sstep(0.975, 0.995, p) * (1 - sstep(0.05, 0.3, pB));
-    var ph = p < 0.27 ? 'Retrato' : p < 0.52 ? 'Entrada' : pB <= 0.02 ? 'Red neuronal' : pB < 0.9 ? 'Salida' : 'Contacto';
+    endEl.style.opacity = sstep(A_VH - 0.2, A_VH - 0.04, sA) * (1 - sstep(0.05, 0.3, pB));
+    var ph = sA < 2.16 ? 'Retrato' : sA < 4.16 ? 'Entrada' : pB <= 0.02 ? 'Red neuronal' : pB < 0.9 ? 'Salida' : 'Contacto';
     if (ph !== lastPhase) { phase.textContent = ph; lastPhase = ph; }
     var chrome = 1 - curO;
     hud.style.opacity = chrome; rail.style.opacity = chrome;
