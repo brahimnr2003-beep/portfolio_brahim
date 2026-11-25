@@ -32,10 +32,10 @@ import pts from './portrait-points.json';
   var projects = [
     /* demo: el proyecto funcionando · code: repositorio en GitHub. Si un enlace está vacío, no se muestra.
        award (opcional): se muestra con una medalla encima del nombre. El orden de la lista es el orden del recorrido. */
-    { name: 'Radar Tech', desc: 'Plataforma para descubrir los eventos tecnológicos de España', demo: 'https://www.radartech.es/', code: 'https://github.com/brahimnr2003-beep/radartech', hex: '#d4935f', rgb: [0.83, 0.58, 0.37] },
+    { name: 'Radar Tech', desc: 'Plataforma para descubrir los eventos tecnológicos de España', demo: 'https://www.radartech.es/', code: 'https://github.com/brahimnr2003-beep/radartech', hex: '#cf7a5c', rgb: [0.81, 0.48, 0.36] },
     { name: 'Neoda', desc: 'Herramienta web para detectar tendencias hídricas en España con datos de la NASA', award: '3.er puesto · NASA Space Apps Granada 2026', demo: 'https://fpanero.github.io/Neoda_Heeramienta_Medicion/', code: 'https://github.com/brahimnr2003-beep/Neoda_Herramienta_', hex: '#7fb894', rgb: [0.50, 0.72, 0.58] },
     { name: 'NevadaRadar', desc: 'Bot de Telegram con avisos para esquiadores de Sierra Nevada', demo: 'https://t.me/NevadaRadar_Bot', code: 'https://github.com/brahimnr2003-beep/NevadaRadar', hex: '#a9cfe3', rgb: [0.66, 0.81, 0.89] },
-    { name: 'TFG', desc: 'Influencers IA frente a humanos: estudio descriptivo-comparativo mediante análisis de contenido cuantitativo', demo: 'https://brahimnr2003-beep.github.io/Tfg_influencers/', code: 'https://github.com/brahimnr2003-beep/Tfg_influencers', hex: '#b394ff', rgb: [0.70, 0.58, 1.0] },
+    { name: 'TFG', desc: 'Influencers IA frente a humanos: estudio descriptivo-comparativo mediante análisis de contenido cuantitativo', demo: 'https://brahimnr2003-beep.github.io/Tfg_influencers/', code: 'https://github.com/brahimnr2003-beep/Tfg_influencers', hex: '#a99bd6', rgb: [0.66, 0.61, 0.84] },
     { name: 'Atlas Horizon Group', desc: 'Business Intelligence de principio a fin: KPIs, data warehouse y cuadros de mando', demo: 'https://brahimnr2003-beep.github.io/atlas-horizon-bi/', code: 'https://github.com/brahimnr2003-beep/atlas-horizon-bi', hex: '#d2b468', rgb: [0.82, 0.71, 0.41] }
   ];
   /* bronze medal for awards: ribbon + disc with the place number */
