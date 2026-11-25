@@ -3,58 +3,75 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Portfolio de Brahim: datos, cloud e IA.">
-<title>Brahim · Datos, Cloud e IA</title>
+<meta name="description" content="Portfolio de Brahim Nouni Ros: IA generativa, automatización y análisis de datos.">
+<title>Brahim Nouni Ros · Datos e IA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body>
-<canvas id="gl" role="img" aria-label="Retrato hecho de partículas que se transforma en una red de neuronas con ramificaciones eléctricas al hacer scroll"></canvas>
-<header class="hud top mono"><span>Brahim</span><span class="dim" id="phase">Retrato</span></header>
-<div class="hero" id="hero"><h1>Brahim</h1><p class="mono">Datos · Cloud · IA</p></div>
-<div class="hint mono" id="hint"><span class="tick"></span>Desliza para entrar</div>
+<canvas id="gl" role="img" data-i18n-attr="aria-label:canvas.label" aria-label="Retrato hecho de partículas que se transforma en una red de neuronas con ramificaciones eléctricas al hacer scroll"></canvas>
+<header class="hud top mono">
+  <a class="me" href="https://www.linkedin.com/in/brahim-nouni-ros-data-ia" target="_blank" rel="noopener" data-i18n-attr="aria-label:top.linkedin" aria-label="LinkedIn de Brahim Nouni Ros">
+    <svg class="li" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    <span>Brahim</span>
+  </a>
+  <div class="tr">
+    <span class="dim" id="phase"></span>
+    <div class="lang" role="group" data-i18n-attr="aria-label:lang.label" aria-label="Idioma">
+      <button type="button" data-lang="es" class="on" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
+<div class="hero" id="hero"><h1>Brahim</h1><p class="mono" data-i18n="hero.sub">Datos · IA</p></div>
+<div class="hint mono" id="hint"><span class="tick"></span><span data-i18n="hint">Desliza para entrar</span></div>
 <div class="rail" aria-hidden="true"><i id="bar"></i></div>
 <div id="labels"></div>
-<div class="end mono" id="end">Sigue bajando</div>
-<div class="fail mono" id="fail">Tu navegador no puede mostrar WebGL, necesario para esta demo.</div>
+<div class="end mono" id="end" data-i18n="end">Sigue bajando</div>
+<div class="fail mono" id="fail" data-i18n="fail">Tu navegador no puede mostrar WebGL, necesario para esta web.</div>
 <div id="scroller"></div>
 <main id="final">
   <div class="fin">
     <header>
-      <p class="mono kicker">Contacto</p>
-      <h2>Hablemos.</h2>
-      <p class="lead">Soy Brahim. Estudio Big Data, Data Science e IA y me especializo en cloud + IA. Si algo de lo que has visto te interesa, escríbeme.</p>
+      <p class="mono kicker" data-i18n="contact.kicker">Contacto</p>
+      <h2 data-i18n="contact.title">Hablemos.</h2>
+      <p class="lead" data-i18n="contact.lead">Soy Brahim Nouni Ros, desarrollo soluciones tecnológicas combinando IA generativa, automatización y análisis de datos. Me apasiona transformar problemas reales en soluciones innovadoras, conectando tecnología, creatividad y negocio.</p>
     </header>
     <ul class="links">
       <li><a href="mailto:brahim.n.r2003@gmail.com"><span class="mono lab">Email</span><span class="val">brahim.n.r2003@gmail.com</span><span class="arr">→</span></a></li>
       <li><a href="https://github.com/brahimnr2003-beep" target="_blank" rel="noopener"><span class="mono lab">GitHub</span><span class="val">github.com/brahimnr2003-beep</span><span class="arr">→</span></a></li>
       <li><a href="https://www.linkedin.com/in/brahim-nouni-ros-data-ia" target="_blank" rel="noopener"><span class="mono lab">LinkedIn</span><span class="val">linkedin.com/in/brahim-nouni-ros-data-ia</span><span class="arr">→</span></a></li>
-      <li><a href="cv/Brahim_Nouni_Ros_CV_ES.pdf" target="_blank" rel="noopener"><span class="mono lab">CV</span><span class="val">Currículum en español</span><span class="arr">→</span></a></li>
-      <li><a href="cv/Brahim_Nouni_Ros_CV_EN.pdf" target="_blank" rel="noopener" hreflang="en"><span class="mono lab">CV · EN</span><span class="val">Resume in English</span><span class="arr">→</span></a></li>
+      <li><a id="cv-main" href="cv/Brahim_Nouni_Ros_CV_ES.pdf" target="_blank" rel="noopener"><span class="mono lab" data-i18n="cv.main.lab">CV</span><span class="val" data-i18n="cv.main.val">Currículum en español</span><span class="arr">→</span></a></li>
+      <li><a id="cv-alt" href="cv/Brahim_Nouni_Ros_CV_EN.pdf" target="_blank" rel="noopener" hreflang="en"><span class="mono lab" data-i18n="cv.alt.lab">CV · EN</span><span class="val" data-i18n="cv.alt.val">Resume in English</span><span class="arr">→</span></a></li>
     </ul>
     <div class="more">
       <section>
-        <h3 class="mono">Formación</h3>
+        <h3 class="mono" data-i18n="edu.title">Formación</h3>
         <ul>
-          <li>Grado en Gestión de Información y Contenidos Digitales</li>
-          <li>Máster en Big Data, Data Science e IA · UCM, online</li>
+          <li data-i18n="edu.1">Grado en Gestión de Información y Contenidos Digitales</li>
+          <li data-i18n="edu.2">Máster en Big Data, Data Science e IA · UCM, online</li>
         </ul>
       </section>
       <section>
-        <h3 class="mono">Foco</h3>
-        <p>Cloud + IA, con GEO (Generative Engine Optimization) como complemento.</p>
+        <h3 class="mono" data-i18n="focus.title">Foco</h3>
+        <p data-i18n="focus.text">IA generativa, automatización y análisis de datos aplicados a problemas reales de negocio.</p>
       </section>
       <section>
-        <h3 class="mono">Herramientas</h3>
+        <h3 class="mono" data-i18n="tools.title">Herramientas</h3>
         <div class="tags mono"><span>python</span><span>pandas</span><span>numpy</span><span>sql</span><span>power bi</span><span>git</span></div>
       </section>
       <section>
-        <h3 class="mono">Disponibilidad</h3>
-        <p>Abierto a oportunidades en remoto en el sector de datos e IA.</p>
+        <h3 class="mono" data-i18n="avail.title">Disponibilidad</h3>
+        <p data-i18n="avail.text">Abierto a oportunidades en remoto o presencial en el sector de datos e IA.</p>
       </section>
     </div>
-    <footer class="foot mono"><span>© 2026 Brahim</span><span>Hecho con Three.js</span></footer>
+    <footer class="foot mono">
+      <span>© 2026 Brahim Nouni Ros</span>
+      <div class="lang" role="group" data-i18n-attr="aria-label:lang.label" aria-label="Idioma">
+        <button type="button" data-lang="es" class="on" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <span data-i18n="foot.made">Hecho con Three.js</span>
+    </footer>
   </div>
 </main>
 

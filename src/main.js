@@ -1,6 +1,9 @@
 import './style.css';
 import * as THREE from 'three';
 import pts from './portrait-points.json';
+import { initLang, onLang, getLang, t } from './i18n.js';
+
+initLang();
 
 (function () {
   var P = pts;
@@ -31,12 +34,13 @@ import pts from './portrait-points.json';
   /* ---------- the neural network: dendrites, axons, somas ---------- */
   var projects = [
     /* demo: el proyecto funcionando · code: repositorio en GitHub. Si un enlace está vacío, no se muestra.
-       award (opcional): se muestra con una medalla encima del nombre. El orden de la lista es el orden del recorrido. */
-    { name: 'Radar Tech', desc: 'Plataforma para descubrir los eventos tecnológicos de España', demo: 'https://www.radartech.es/', code: 'https://github.com/brahimnr2003-beep/radartech', hex: '#cf7a5c', rgb: [0.81, 0.48, 0.36] },
-    { name: 'Neoda', desc: 'Herramienta web para detectar tendencias hídricas en España con datos de la NASA', award: '3.er puesto · NASA Space Apps Granada 2026', demo: 'https://fpanero.github.io/Neoda_Heeramienta_Medicion/', code: 'https://github.com/brahimnr2003-beep/Neoda_Herramienta_', hex: '#7fb894', rgb: [0.50, 0.72, 0.58] },
-    { name: 'NevadaRadar', desc: 'Bot de Telegram con avisos para esquiadores de Sierra Nevada', demo: 'https://t.me/NevadaRadar_Bot', code: 'https://github.com/brahimnr2003-beep/NevadaRadar', hex: '#a9cfe3', rgb: [0.66, 0.81, 0.89] },
-    { name: 'TFG', desc: 'Influencers IA frente a humanos: estudio descriptivo-comparativo mediante análisis de contenido cuantitativo', demo: 'https://brahimnr2003-beep.github.io/Tfg_influencers/', code: 'https://github.com/brahimnr2003-beep/Tfg_influencers', hex: '#a99bd6', rgb: [0.66, 0.61, 0.84] },
-    { name: 'Atlas Horizon Group', desc: 'Business Intelligence de principio a fin: KPIs, data warehouse y cuadros de mando', demo: 'https://brahimnr2003-beep.github.io/atlas-horizon-bi/', code: 'https://github.com/brahimnr2003-beep/atlas-horizon-bi', hex: '#d2b468', rgb: [0.82, 0.71, 0.41] }
+       award (opcional): se muestra con una medalla encima del nombre. El orden de la lista es el orden del recorrido.
+       descEn / awardEn / nameEn: versión en inglés (si falta nameEn se usa el mismo nombre). */
+    { name: 'Radar Tech', desc: 'Plataforma para descubrir los eventos tecnológicos de España', descEn: 'Platform to discover tech events across Spain', demo: 'https://www.radartech.es/', code: 'https://github.com/brahimnr2003-beep/radartech', hex: '#cf7a5c', rgb: [0.81, 0.48, 0.36] },
+    { name: 'Neoda', desc: 'Herramienta web para detectar tendencias hídricas en España con datos de la NASA', descEn: 'Web tool that detects water trends in Spain using NASA data', award: '3.er puesto · NASA Space Apps Granada 2026', awardEn: '3rd place · NASA Space Apps Granada 2026', demo: 'https://fpanero.github.io/Neoda_Heeramienta_Medicion/', code: 'https://github.com/brahimnr2003-beep/Neoda_Herramienta_', hex: '#7fb894', rgb: [0.50, 0.72, 0.58] },
+    { name: 'NevadaRadar', desc: 'Bot de Telegram con avisos para esquiadores de Sierra Nevada', descEn: 'Telegram bot with alerts for skiers in Sierra Nevada', demo: 'https://t.me/NevadaRadar_Bot', code: 'https://github.com/brahimnr2003-beep/NevadaRadar', hex: '#a9cfe3', rgb: [0.66, 0.81, 0.89] },
+    { name: 'TFG', nameEn: 'Thesis', desc: 'Influencers IA frente a humanos: estudio descriptivo-comparativo mediante análisis de contenido cuantitativo', descEn: 'AI vs. human influencers: a descriptive-comparative study using quantitative content analysis', demo: 'https://brahimnr2003-beep.github.io/Tfg_influencers/', code: 'https://github.com/brahimnr2003-beep/Tfg_influencers', hex: '#a99bd6', rgb: [0.66, 0.61, 0.84] },
+    { name: 'Atlas Horizon Group', desc: 'Business Intelligence de principio a fin: KPIs, data warehouse y cuadros de mando', descEn: 'End-to-end Business Intelligence: KPIs, data warehouse and dashboards', demo: 'https://brahimnr2003-beep.github.io/atlas-horizon-bi/', code: 'https://github.com/brahimnr2003-beep/atlas-horizon-bi', hex: '#d2b468', rgb: [0.82, 0.71, 0.41] }
   ];
   /* bronze medal for awards: ribbon + disc with the place number */
   var MEDAL = '<svg class="medal" viewBox="0 0 24 32" aria-hidden="true">' +
@@ -383,32 +387,46 @@ import pts from './portrait-points.json';
   scene.add(exitTunnel);
 
   /* ---------- labels ---------- */
-  var labelsEl = document.getElementById('labels');
+  var labelsEl = document.getElementById('labels'), labelRefs = [];
   var labelEls = projects.map(function (p) {
     var d = document.createElement('div');
     d.className = 'node';
     d.style.setProperty('--c', p.hex);
+    var refs = { p: p, links: [] };
     if (p.award) {
       var aw = document.createElement('div'); aw.className = 'award mono';
       aw.innerHTML = MEDAL;
-      aw.appendChild(document.createTextNode(p.award));
+      refs.award = document.createTextNode('');
+      aw.appendChild(refs.award);
       d.appendChild(aw);
     }
-    var nb = document.createElement('b'); nb.textContent = p.name;
-    var ns = document.createElement('span'); ns.className = 'mono'; ns.textContent = p.desc;
-    d.appendChild(nb); d.appendChild(ns);
+    refs.name = document.createElement('b');
+    refs.desc = document.createElement('span'); refs.desc.className = 'mono';
+    d.appendChild(refs.name); d.appendChild(refs.desc);
     var row = document.createElement('div'); row.className = 'go-row';
-    [['Ver proyecto', p.demo], ['Ver código', p.code]].forEach(function (l) {
+    [['link.demo', p.demo], ['link.code', p.code]].forEach(function (l) {
       if (!l[1]) return;
       var a = document.createElement('a');
       a.className = 'mono go'; a.href = l[1]; a.target = '_blank'; a.rel = 'noopener'; a.tabIndex = -1;
-      a.textContent = l[0] + ' ↗';
+      refs.links.push([a, l[0]]);
       row.appendChild(a);
     });
     if (row.children.length) d.appendChild(row);
     labelsEl.appendChild(d);
+    labelRefs.push(refs);
     return d;
   });
+  function textLabels() {
+    var en = getLang() === 'en';
+    labelRefs.forEach(function (r) {
+      r.name.textContent = en && r.p.nameEn ? r.p.nameEn : r.p.name;
+      r.desc.textContent = en && r.p.descEn ? r.p.descEn : r.p.desc;
+      if (r.award) r.award.nodeValue = en && r.p.awardEn ? r.p.awardEn : r.p.award;
+      r.links.forEach(function (l) { l[0].textContent = t(l[1]) + ' ↗'; });
+    });
+  }
+  textLabels();
+  onLang(function () { textLabels(); lastPhase = null; });
   function setTab(el, on) {
     var as = el.getElementsByTagName('a');
     for (var i = 0; i < as.length; i++) as[i].tabIndex = on ? 0 : -1;
@@ -481,7 +499,7 @@ import pts from './portrait-points.json';
   }
 
   /* scroll is split in three: A = portrait + projects (A_VH), B = exit tunnel (340vh), O = final page scrolling in */
-  var B_VH = 3.4, Z_END = X_START - 42;
+  var B_VH = 2.4, Z_END = X_START - 32;
   document.getElementById('scroller').style.height = ((A_VH + B_VH + 1) * 100).toFixed(0) + 'vh';
   var tS = 0, curS = 0;
   function readScroll() {
@@ -548,10 +566,11 @@ import pts from './portrait-points.json';
     hero.style.opacity = fade; hint.style.opacity = fade;
     bar.style.transform = 'scaleY(' + ((p * A_VH + pB * B_VH) / (A_VH + B_VH)).toFixed(4) + ')';
     endEl.style.opacity = sstep(A_VH - 0.2, A_VH - 0.04, sA) * (1 - sstep(0.05, 0.3, pB));
-    var ph = sA < 2.16 ? 'Retrato' : sA < 4.16 ? 'Entrada' : pB <= 0.02 ? 'Red neuronal' : pB < 0.9 ? 'Salida' : 'Contacto';
-    if (ph !== lastPhase) { phase.textContent = ph; lastPhase = ph; }
+    var ph = sA < 2.16 ? '' : sA < 4.16 ? 'phase.enter' : pB <= 0.02 ? 'phase.net' : pB < 0.9 ? 'phase.exit' : 'phase.contact';
+    if (ph !== lastPhase) { phase.textContent = ph ? t(ph) : ''; lastPhase = ph; }
     var chrome = 1 - curO;
     hud.style.opacity = chrome; rail.style.opacity = chrome;
+    hud.style.pointerEvents = chrome < 0.1 ? 'none' : '';
 
     renderer.render(scene, camera);
   }
